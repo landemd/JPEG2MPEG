@@ -1,0 +1,16 @@
+from PIL import Image, ImageQt
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
+
+def generate_thumbnail(image_path, size=(100, 100)):
+    """生成缩略图"""
+    try:
+        img = Image.open(image_path)
+        img.thumbnail(size)
+        return QPixmap.fromImage(ImageQt.ImageQt(img))
+    except Exception as e:
+        print(f"Error generating thumbnail for {image_path}: {e}")
+        # 返回默认图标
+        pixmap = QPixmap(size[0], size[1])
+        pixmap.fill(Qt.lightGray)
+        return pixmap

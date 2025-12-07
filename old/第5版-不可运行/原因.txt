@@ -1,0 +1,29 @@
+在main_window.py中已经有一个检查MOVIEPY_AVAILABLE的逻辑，但是在导入export_manager时，export_manager.py一开始就导入了moviepy.editor，这导致了在导入export_manager时就会失败。
+
+因此，我们需要重构export_manager.py，将moviepy的导入放在函数内部，或者使用延迟导入，避免在模块加载时就导入moviepy。
+
+同样的问题也可能出现在其他文件中。
+
+让我们重新组织代码：
+
+1、在需要使用moviepy的地方，使用局部导入，这样即使moviepy没有安装，只要不使用相关功能就不会报错。
+
+2、在main_window.py中，我们已经有了对moviepy的检查，所以应该将export_manager.py中对moviepy的导入移到函数内部。
+
+修复方案：
+
+1、延迟导入 moviepy：
+
+在 core/export_manager.py中，将 from moviepy.editor import ...移动到 export_video函数内部
+
+在 ui/main_window.py中，将 moviepy 的导入移动到 check_dependencies和 export_video方法内部
+
+2、增强错误处理：
+
+在 export_video方法中捕获 ImportError异常
+
+提供更友好的错误消息
+
+3、简化依赖检查：
+
+在 check_dependencies方法中直接尝试导入 moviepy 来检查可用性

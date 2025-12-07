@@ -1,0 +1,1 @@
+错误是因为pydub依赖于pyaudioop，而pyaudioop是Python标准库的一部分，但audioop模块在Python 3.13中被移到了test.support模块中，但这不是一个公开的API
